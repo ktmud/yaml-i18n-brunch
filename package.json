@@ -12,6 +12,7 @@
     "node.extend": "~1.0.8"
   },
   "devDependencies": {
+    "coffee-script": "~1.6.3",
     "mocha": "*",
     "should": "*"
   },

@@ -74,7 +74,7 @@ exports.config =
 
 ### config.locale.default
 
-Each time you edit the default locale's yaml file. The distionary keys will be synchronize to other languages.
+Each time you edit the default locale's yaml file, he distionary keys will be synchronized to other languages.
 
 #### comment-outted keys
 
@@ -108,7 +108,7 @@ hello: 你好！
 "#goodbye": 再见！
 ```
 
-The commented key `#goodbye` will be dropped when compiled to json:
+However, the "commented key" `#goodbye` will be dropped when compiled to json:
 
 ```json
 {
@@ -119,9 +119,10 @@ The commented key `#goodbye` will be dropped when compiled to json:
 But if you revert the deleted key in default locale's yaml, the old translation will be reverted too.
 
 
+
 ### config.locale.all
 
-All locales available. If not set, will look up all subdirectories under `config.source`.
+An array of all locales available. If not set, will look up subdirectories under `config.source`.
 
 
 ## Licence

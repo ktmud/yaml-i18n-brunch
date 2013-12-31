@@ -1,26 +1,13 @@
 # yaml-i18n-brunch
 
-Generates translation dictionary as json files from yaml files.
+Converts your yaml format translation files into json,
+and automatically sync dictionary keys from default locale to any other locales.
 
 ## Installation
 
-Install the plugin via npm with `npm install --save yaml-i18n-brunch`.
+Install this plugin via npm with `npm install --save yaml-i18n-brunch`.
 
 ## Usage
-
-Set options in your brunch config (such as `brunch-config.coffee`):
-
-```coffeescript
-exports.config =
-  ...
-  plugins:
-    yamlI18n:
-      flatten: on,
-      source: 'app/locales',
-      dest: 'public/locales',
-      locale:
-        default: 'en'
-```
 
 Add translations into `app/locales` directory:
 
@@ -69,13 +56,29 @@ hello_%s: Hello, %s
 }
 ```
 
+## Configuration
+
+Set options in your brunch config (such as `brunch-config.coffee`):
+
+```coffeescript
+exports.config =
+  ...
+  plugins:
+    yamlI18n:
+      flatten: on,
+      source: 'app/locales',
+      dest: 'public/locales',
+      locale:
+        default: 'en'
+```
+
 ### config.locale.default
 
 Each time you edit the default locale's yaml file. The distionary keys will be synchronize to other languages.
 
-#### comment out temporary unused translation
+#### comment-outted keys
 
-When you delete a key in default locale's yaml, the corresponding key is comment out in other languages,
+When you delete a key in default locale's yaml, the corresponding key is commented out in other languages,
 but not deleted. This is for keeping you from accidently lose translations when update dictionary.
 
 With `locales/en/message.yaml`:
@@ -118,7 +121,7 @@ But if you revert the deleted key in default locale's yaml, the old translation 
 
 ### config.locale.all
 
-All locales available. If not set, will look up all directories under `app/locales`.
+All locales available. If not set, will look up all subdirectories under `config.source`.
 
 
 ## Licence

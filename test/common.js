@@ -1,0 +1,1 @@
+global.Plugin = require('../lib');

@@ -1,0 +1,39 @@
+{
+  "name": "yaml-i18n-brunch",
+  "version": "0.1.0",
+  "description": "Generate yaml format i18n translation files for your brunch project",
+  "main": "lib/index.js",
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "dependencies": {
+    "js-yaml": "~3.0.1",
+    "async": "~0.2.5",
+    "node.extend": "~1.0.8"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*"
+  },
+  "scripts": {
+    "prepublish": "rm -rf lib && coffee --bare --output lib/ src/",
+    "test": "rm -rf test/tmp && ./node_modules/.bin/mocha --require test/common.js --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ktmud/yaml-i18n-brunch.git"
+  },
+  "keywords": [
+    "brunch-plugin",
+    "i18n",
+    "brunch",
+    "yaml",
+    "translation"
+  ],
+  "author": "ktmud <kissmud@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ktmud/yaml-i18n-brunch/issues"
+  },
+  "homepage": "https://github.com/ktmud/yaml-i18n-brunch"
+}

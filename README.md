@@ -73,10 +73,10 @@ hello_%s: Hello, %s
 
 Each time you edit the default locale's yaml file. The distionary keys will be synchronize to other languages.
 
-#### comment out unused translation
+#### comment out temporary unused translation
 
 When you delete a key in default locale's yaml, the corresponding key is comment out in other languages,
-but not deleted.  This is for keeping you from accidently losing translations when keys change.
+but not deleted. This is for keeping you from accidently lose translations when update dictionary.
 
 With `locales/en/message.yaml`:
 
@@ -98,13 +98,14 @@ When you change `locales/en/messages.yaml` to:
 goodbye: Good bye!
 ```
 
-The Chinese translation `locales/zh-cn/messages.yaml` would be:
+The Chinese translation `locales/zh-cn/messages.yaml` would become:
+
 ```yaml
 hello: 你好！
 "#goodbye": 再见！
 ```
 
-And the compiled json file will drop commented keys:
+The commented key `#goodbye` will be dropped when compiled to json:
 
 ```json
 {
@@ -112,9 +113,8 @@ And the compiled json file will drop commented keys:
 }
 ```
 
-When use revert the deleted key, the old translation will be used.
+But if you revert the deleted key in default locale's yaml, the old translation will be reverted too.
 
-I choose this approach because it would be difficult to compare yaml files line to line.
 
 ### config.locale.all
 

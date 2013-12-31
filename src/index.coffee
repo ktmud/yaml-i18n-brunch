@@ -50,14 +50,14 @@ flatten = (obj, prev='') ->
 compare_merge = (a, b) ->
   ret = {}
   for k,v of b
-    # skip comment line
+    # skip comment line in b
     if k[0] is '#'
       continue
+    val = a[k] or a['#' + k]
     if 'object' is typeof v
-      ret[k] = {}
-      compare_merge(ret[k], v)
+      ret[k] = compare_merge(a_val ? {}, v)
     else
-      ret[k] = v
+      ret[k] = val ? v
   for k,v of a
     # comment out unused keys
     if (k not of b) and (k[0] isnt '#')

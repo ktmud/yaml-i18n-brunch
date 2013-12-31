@@ -130,7 +130,11 @@ describe('Plugin', function() {
     });
     afterEach(clean);
 
-    it('should flatten', function() {
+    it('should sync yaml', function() {
+      read(source_yaml).should.equal(read(target_yaml));
+    });
+
+    it('should flatten json', function() {
       require(source_json)['test.nest1'].should.equal('hello');
     });
 

@@ -1,4 +1,4 @@
-# yaml-i18n-brunch
+# yaml-i18n-brunch [![NPM version](https://badge.fury.io/js/yaml-i18n-brunch.png)](http://badge.fury.io/js/yaml-i18n-brunch) [![Build Status](https://travis-ci.org/ktmud/yaml-i18n-brunch.png?branch=master)](https://travis-ci.org/ktmud/yaml-i18n-brunch) 
 
 Converts your yaml format translation files into json,
 and automatically sync dictionary keys from default locale to any other locales.

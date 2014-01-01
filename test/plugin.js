@@ -96,21 +96,28 @@ describe('Plugin', function() {
 
   describe('compile tomerge', function(e) {
 
+    var merged;
+
     beforeEach(function(done) {
       getPaths('tomerge');
       // override en/tomerge.json to original
       fs.writeFileSync(yamlPath('en', 'tomerge'), read(yamlPath('en', '_tomerge')));
-      doCompile(source_yaml, done);
+      doCompile(source_yaml, function() {
+        merged = read(target_yaml);
+        done();
+      });
     });
     afterEach(clean);
 
     it('should merge', function() {
-      var merged = read(target_yaml);
-      merged.should.include('only_source: source');
+      merged.should.include("only_source: source");
+    });
+
+    it('should leave translation intact', function() {
+      merged.should.include("both: target");
     });
 
     it('should comment unused', function() {
-      var merged = read(target_yaml);
       merged.should.include('"#only_target": target');
     });
 

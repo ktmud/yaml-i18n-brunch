@@ -9,20 +9,26 @@ Install this plugin via npm with `npm install --save yaml-i18n-brunch`.
 
 ## Usage
 
-Add translations into `app/locales` directory:
+Add translations into `app/locales` directory,
+the plugin will try to compile all yaml files under it
+into json and place the json files under `public/locales`.
+
 
 ```
-├── locales
-│   ├── en
-│   │   └── messages.yaml
-│   └── zh-cn
-│       └── messages.yaml
+├── app
+│   ├── locales
+│   │   ├── en
+│   │   │   └── messages.yaml
+│   │   └── zh-cn
+│   │        └── messages.yaml
+├── public
+│   ├── locales
+│   │   ├── en
+│   │   │   └── messages.json
+│   │   └── zh-cn
+│   │        └── messages.json
 
 ```
-
-The plugin will try to compile all yaml files under `config.source`
-into json, and put it into `config.dest`.
-
 
 The yaml file should be a key-value mapping:
 
@@ -32,6 +38,7 @@ welcome_%s: Welcome, %s
 ```
 
 The compiled `public/locales/en/messages.json` will be look like:
+
 ```json
 {
   "welcome": "Welcome to our site!", 
@@ -39,7 +46,8 @@ The compiled `public/locales/en/messages.json` will be look like:
 }
 ```
 
-You can use nested object in yaml, if `config.flatten` is not `off`, the output will be flattened.
+You can use nested object in yaml, if `config.flatten` is `on` (which is default),
+the output will be flattened.
 
 ```yaml
 welcome:
@@ -74,7 +82,7 @@ exports.config =
 
 ### config.locale.default
 
-Each time you edit the default locale's yaml file, he distionary keys will be synchronized to other languages.
+Each time you edit the default locale's yaml file, all dictionary keys will be synchronized to other languages.
 
 #### comment-outted keys
 

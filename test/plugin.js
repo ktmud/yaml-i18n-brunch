@@ -1,5 +1,6 @@
 var fs = require('fs');
 var should = require('should');
+var Plugin = require('../lib');
 
 function unlink(path) {
   //path = process.cwd() + path;
@@ -12,7 +13,8 @@ function read(path) {
   return fs.readFileSync(path, 'utf-8');
 }
 
-describe('Plugin', function() {
+describe('yaml i18n brunch', function() {
+
   var plugin;
 
   beforeEach(function() {
@@ -40,12 +42,10 @@ describe('Plugin', function() {
     source_json = jsonPath('zh-cn', domain);
     target_json = jsonPath('en', domain);
   }
-
   function doCompile(file, done) {
     var data = read(file);
     plugin.compile(data, file, done);
   }
-
   function clean() {
     target_yaml && unlink(target_yaml);
     source_json && unlink(source_json);
@@ -100,7 +100,7 @@ describe('Plugin', function() {
 
     beforeEach(function(done) {
       getPaths('tomerge');
-      // override en/tomerge.json to original
+      // revert en/tomerge.yaml to original
       fs.writeFileSync(yamlPath('en', 'tomerge'), read(yamlPath('en', '_tomerge')));
       doCompile(source_yaml, function() {
         merged = read(target_yaml);
@@ -110,11 +110,11 @@ describe('Plugin', function() {
     afterEach(clean);
 
     it('should merge', function() {
-      merged.should.include("only_source: source");
+      merged.should.include('only_source: source');
     });
 
     it('should leave translation intact', function() {
-      merged.should.include("both: target");
+      merged.should.include('both: target');
     });
 
     it('should comment unused', function() {
@@ -131,18 +131,30 @@ describe('Plugin', function() {
   });
 
   describe('compile nested', function(e) {
+
     beforeEach(function(done) {
+      // revert en/nested.yaml to original
+      fs.writeFileSync(yamlPath('en', 'nested'), read(yamlPath('en', '_nested')));
       getPaths('nested');
       doCompile(source_yaml, done);
     });
     afterEach(clean);
 
     it('should sync yaml', function() {
-      read(source_yaml).should.equal(read(target_yaml));
+      var merged = read(target_yaml);
+      merged.should.include('  nest2: source');
+      merged.should.include('"#test2": target');
     });
 
     it('should flatten json', function() {
       require(source_json)['test.nest1'].should.equal('hello');
+    });
+
+    it('should leave nested translation intact', function(done) {
+      doCompile(target_yaml, function() {
+        require(target_json)['test.nest1'].should.equal('target nest1');
+        done();
+      });
     });
 
   });

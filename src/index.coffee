@@ -29,13 +29,13 @@ safewrite = (path, data, callback) ->
   fs.writeFile path, data, (err) ->
     callback(err)
 
-# read a file if existed
+# read a file only when existed
 saferead = (path) ->
   if fs.existsSync(path)
     return fs.readFileSync(path, 'utf-8')
   return ''
 
-
+# flatten nexted object
 flatten = (obj, prev='') ->
   ret = {}
   for k,v of obj
@@ -46,18 +46,18 @@ flatten = (obj, prev='') ->
       ret[key] = v
   ret
 
-# Merge b into a, and comment out keys not in b for a
+# Merge b into a, and comment out keys not in b
 compare_merge = (a, b) ->
   ret = {}
   for k,v of b
     # skip comment line in b
     if k[0] is '#'
       continue
-    val = a[k] or a['#' + k]
+    a_val = a[k] or a['#' + k]
     if 'object' is typeof v
       ret[k] = compare_merge(a_val ? {}, v)
     else
-      ret[k] = val ? v
+      ret[k] = a_val ? v
   for k,v of a
     # comment out unused keys
     if (k not of b) and (k[0] isnt '#')
@@ -90,14 +90,13 @@ module.exports = class Compiler
   sync: (path, data, callback) ->
     data = yaml.safeLoad(data) or {}
     filename = basename(path)
-    async.each @cfg.locale.all,
-      (item, callback) =>
-        return callback(null, null) if item is @cfg.locale.default
-        path = join(@sourceDir(item), filename)
-        _data = yaml.safeLoad(saferead(path)) or {}
-        _data = compare_merge(_data, data)
-        safewrite(path, yaml.safeDump(_data), callback)
-      , callback
+    dosync = (item, callback) =>
+      return callback(null, null) if item is @cfg.locale.default
+      path = join(@sourceDir(item), filename)
+      _data = yaml.safeLoad(saferead(path)) or {}
+      _data = compare_merge(_data, data)
+      safewrite(path, yaml.safeDump(_data), callback)
+    async.each @cfg.locale.all, dosync, callback
 
 
   # copy src yaml file to dest, as json

@@ -1,4 +1,4 @@
-# yaml-i18n-brunch [![NPM version](https://badge.fury.io/js/yaml-i18n-brunch.png)](http://badge.fury.io/js/yaml-i18n-brunch) [![Build Status](https://travis-ci.org/ktmud/yaml-i18n-brunch.png?branch=master)](https://travis-ci.org/ktmud/yaml-i18n-brunch) 
+# yaml-i18n-brunch [![NPM version](https://badge.fury.io/js/yaml-i18n-brunch.png)](http://badge.fury.io/js/yaml-i18n-brunch) [![Build Status](https://travis-ci.org/ktmud/yaml-i18n-brunch.png?branch=master)](https://travis-ci.org/ktmud/yaml-i18n-brunch)
 
 Converts your yaml format translation files into json,
 and automatically sync dictionary keys from default locale to any other locales.
@@ -41,7 +41,7 @@ The compiled `public/locales/en/messages.json` will be look like:
 
 ```json
 {
-  "welcome": "Welcome to our site!", 
+  "welcome": "Welcome to our site!",
   "welcome_%s": "Welcome, %s"
 }
 ```
@@ -58,8 +58,8 @@ hello_%s: Hello, %s
 
 ```json
 {
-  "hello_%s": "Hello, %s", 
-  "welcome.first_visit": "Welcome to this site!", 
+  "hello_%s": "Hello, %s",
+  "welcome.first_visit": "Welcome to this site!",
   "welcome.returned": "Welcome back!"
 }
 ```
@@ -131,6 +131,51 @@ But if you revert the deleted key in default locale's yaml, the old translation 
 ### config.locale.all
 
 An array of all locales available. If not set, will look up subdirectories under `config.source`.
+
+
+## The client side solution
+
+Use something like [jquery-i18n](https://github.com/ktmud/jquery-i18n), add it to `vendor/`.
+
+Then provide a loader for fetch the right locale.
+
+Say `app/i18n.coffee`:
+
+```coffeescript
+i18n = $.i18n
+
+# Export the gettext global
+window.__ = window.gettext = _.bind(i18n._, i18n)
+
+COOKIE_NAME = 'locale'
+DEFAULT_LOCALE = 'zh-cn'
+LOCALES =
+  'zh-cn': '中文(简体)'
+  'en': 'English'
+ALL_LOCALES = Object.keys LOCALES
+
+detect = ->
+  ret = $.cookie(COOKIE_NAME, { expires: 365, path: '/' })
+  ret = ret or navigator.language or navigator.userLanguage or 'zh'
+  ret = ret.toLowerCase()
+  if ret in aliases
+    ret = aliases[ret]
+  if ret not in ALL_LOCALES
+    ret = DEFAULT_LOCALE
+  $.cookie(COOKIE_NAME, ret)
+  return ret
+
+i18n.detect = detect
+i18n.locale = detect()
+
+
+i18n.fetch = (domain, callback) ->
+  $.getJSON "/locales/#{i18n.locale}/#{domain}.json", (res) ->
+    i18n.load(res)
+    callback() # after locales fetched, you can init your app here
+
+module.exports = i18n
+```
 
 
 ## Licence

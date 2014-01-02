@@ -77,7 +77,7 @@ module.exports = class Compiler
   pattern: /\.ya?ml$/
 
   constructor: (cfg) ->
-    cfg = {} if cfg is null
+    cfg = cfg.plugins?.yamlI18n ? {}
     cfg = extend true, {}, DEFAULTS, cfg
     cfg.locale.all = getdirs(cfg.source) unless cfg.locale.all
     @cfg = cfg

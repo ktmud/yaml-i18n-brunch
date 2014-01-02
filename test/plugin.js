@@ -19,10 +19,14 @@ describe('yaml i18n brunch', function() {
 
   beforeEach(function() {
     plugin = new Plugin({
-      source: __dirname + '/data/source',
-      dest: __dirname + '/tmp',
-      locale: {
-        default: 'zh-cn'
+      plugins: {
+        yamlI18n: {
+          source: __dirname + '/data/source',
+          dest: __dirname + '/tmp',
+          locale: {
+            default: 'zh-cn'
+          }
+        }
       }
     });
   });

@@ -18,7 +18,7 @@
   },
   "scripts": {
     "prepublish": "rm -rf lib && coffee --bare --output lib/ src/",
-    "test": "./node_modules/.bin/mocha",
+    "test": "npm start && ./node_modules/.bin/mocha",
     "coverage": "rm -rf test/tmp && istanbul cover ./node_modules/.bin/_mocha && open ./coverage/lcov-report/index.html"
   },
   "repository": {

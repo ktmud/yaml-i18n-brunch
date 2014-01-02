@@ -137,7 +137,7 @@ An array of all locales available. If not set, will look up subdirectories under
 
 Use something like [jquery-i18n](https://github.com/ktmud/jquery-i18n), add it to `vendor/`.
 
-Then provide a loader for fetch the right locale.
+Then provide a loader to fetch the locale json.
 
 Say `app/i18n.coffee`:
 
@@ -172,7 +172,7 @@ i18n.locale = detect()
 i18n.fetch = (domain, callback) ->
   $.getJSON "/locales/#{i18n.locale}/#{domain}.json", (res) ->
     i18n.load(res)
-    callback() # after locales fetched, you can init your app here
+    callback() # after locales fetched, you can init your app in the callback
 
 module.exports = i18n
 ```

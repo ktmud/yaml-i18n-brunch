@@ -39,7 +39,10 @@ saferead = (path) ->
 flatten = (obj, prev='') ->
   ret = {}
   for k,v of obj
-    key = if prev is '' then k else "#{prev}.#{k}"
+    if prev is ''
+      key = k
+    else
+      key = if k then "#{prev}.#{k}" else prev
     if 'object' is typeof v
       extend true, ret, flatten(v, key)
     else
@@ -107,7 +110,7 @@ module.exports = class Compiler
     dest = path.replace @cfg.source, @cfg.dest
     dest = dest.replace @pattern, '.json'
     safewrite(dest, JSON.stringify(dict, json_skip_comment, 2), callback)
-    
+
   isDefaultLocaleFile: (path) ->
     path.indexOf(@default_dir) == 0
 

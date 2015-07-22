@@ -77,13 +77,17 @@ module.exports = class Compiler
   brunchPlugin: true
   type: 'javascript'
   extension: 'yaml'
-  pattern: /\.ya?ml$/
+  extensionEnd: /\.ya?ml$/
 
   constructor: (cfg) ->
     cfg = cfg.plugins?.yamlI18n ? {}
     cfg = extend true, {}, DEFAULTS, cfg
     cfg.locale.all = getdirs(cfg.source) unless cfg.locale.all
     @cfg = cfg
+    if require('os').platform() is 'win32'
+        @cfg.dest = @cfg.dest.replace /\//g, '\\'
+        @cfg.source = @cfg.source.replace /\//g, '\\'
+    @pattern = new RegExp(@escapeRegex(@cfg.source) + "(.*)\.ya?ml$");
     @default_dir = @sourceDir(cfg.locale.default)
 
   sourceDir: (locale) ->
@@ -101,14 +105,13 @@ module.exports = class Compiler
       safewrite(path, yaml.safeDump(_data), callback)
     async.each @cfg.locale.all, dosync, callback
 
-
   # copy src yaml file to dest, as json
   dump: (path, data, callback) ->
     dict = yaml.safeLoad(data) or {}
     if @cfg.flatten is on
       dict = flatten(dict)
     dest = path.replace @cfg.source, @cfg.dest
-    dest = dest.replace @pattern, '.json'
+    dest = dest.replace @extensionEnd, '.json'
     safewrite(dest, JSON.stringify(dict, json_skip_comment, 2), callback)
 
   isDefaultLocaleFile: (path) ->
@@ -124,3 +127,6 @@ module.exports = class Compiler
       ticker += 1
       @sync(path, data, tick)
     @dump(path, data, tick)
+	
+  escapeRegex: (str) ->
+    str.replace /[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'

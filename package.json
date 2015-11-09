@@ -9,12 +9,12 @@
   "dependencies": {
     "async": ">= 0.2 < 0.3",
     "js-yaml": ">= 3.0 < 3.1",
-    "mocha": ">= 2.3 < 2.4",
-    "node.extend": ">= 1.0 < 1.1",
-    "should": ">= 5.0 < 6.0"
+    "node.extend": ">= 1.0 < 1.1"
   },
   "devDependencies": {
-    "coffee-script": ">= 1.6 < 1.7"
+    "coffee-script": ">= 1.6 < 1.7",
+    "mocha": ">= 2.3 < 2.4",
+    "should": ">= 5.0 < 6.0"
   },
   "scripts": {
     "prepublish": "rm -rf lib && coffee --bare --output lib/ src/",

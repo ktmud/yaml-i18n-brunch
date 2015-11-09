@@ -1,6 +1,6 @@
 {
   "name": "yaml-i18n-brunch",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Generate yaml format i18n translation files for your brunch project",
   "main": "lib/index.js",
   "engines": {

@@ -114,15 +114,15 @@ describe('yaml i18n brunch', function() {
     afterEach(clean);
 
     it('should merge', function() {
-      merged.should.include('only_source: source');
+      merged.should.containDeep('only_source: source');
     });
 
     it('should leave translation intact', function() {
-      merged.should.include('both: target');
+      merged.should.containDeep('both: target');
     });
 
     it('should comment unused', function() {
-      merged.should.include('"#only_target": target');
+      merged.should.containDeep('"#only_target": target');
     });
 
     it('json should not have commented key', function(done) {
@@ -146,8 +146,8 @@ describe('yaml i18n brunch', function() {
 
     it('should sync yaml', function() {
       var merged = read(target_yaml);
-      merged.should.include('  nest2: source');
-      merged.should.include('"#test2": target');
+      merged.should.containDeep('nest2: source');
+      merged.should.containDeep('"#test2": target');
     });
 
     it('should flatten json', function() {

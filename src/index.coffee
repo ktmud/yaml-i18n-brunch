@@ -114,10 +114,14 @@ module.exports = class Compiler
     dest = dest.replace @extensionEnd, '.json'
     safewrite(dest, JSON.stringify(dict, json_skip_comment, 2), callback)
 
+  isInSourcePath: (path) ->
+    path.indexOf(@cfg.source) == 0
+
   isDefaultLocaleFile: (path) ->
     path.indexOf(@default_dir) == 0
 
   compile: (data, path, callback) ->
+    return unless @isInSourcePath(path)
     ticker = 1
     tick = (err, result) ->
       return callback(err) if err
